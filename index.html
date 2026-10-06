@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shared Memory House</title>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <style>
+:root{color-scheme:dark;--bg:#080808;--paper:#101010;--ink:#eee;--muted:#929292;--line:#303030}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:wait}.hidden{display:none!important}#app{height:100%}h1,h2,h3,p{margin-top:0}p{color:#aaa;line-height:1.6}h1{font-size:clamp(48px,7vw,86px);font-weight:400;letter-spacing:-.065em;line-height:1.02}h2{font-size:30px;font-weight:400;letter-spacing:-.04em}h3{font-weight:400}.eyebrow,.section-title{font:10px/1.6 monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}button{border:1px solid #404040;border-radius:0;padding:11px 14px;background:transparent;color:#ccc;transition:background .25s,color .25s,border-color .25s}button:hover{background:#222;color:#fff;border-color:#777}.primary,.tool-btn.active{background:#e5e5e5;color:#111;border-color:#e5e5e5}.primary:hover{background:#fff;color:#000}.danger{border-style:dashed}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #fff;outline-offset:5px}input,textarea{background:#181818;color:#eee;border:1px solid var(--line);border-radius:0;padding:13px;outline:none}#loginView{min-height:100%;display:grid;place-items:center;padding:32px;background:radial-gradient(ellipse at 50% 80%,#242424,transparent 55%)}.login-card{width:min(620px,100%);border-left:1px solid #555;padding:20px 0 20px 38px}.login-row{display:flex;gap:12px;margin-top:32px}.login-row input{flex:1;min-width:0}#loginError{color:#ccc;font:12px monospace}
+#lobbyView{min-height:100%;overflow:auto;background:radial-gradient(ellipse at 50% 55%,#191919 0,#080808 65%)}.lobby-shell{max-width:1480px;margin:auto;padding:44px 5vw 30px}.topbar{display:flex;justify-content:space-between;gap:28px;align-items:flex-start}.title-wrap h2{font-size:clamp(32px,4vw,52px);margin-bottom:10px}.title-wrap p{font-size:12px;max-width:420px}.topbar-actions{display:flex;gap:18px;flex-wrap:wrap;justify-content:flex-end}.topbar-actions .secondary{font-size:10px;border:0;padding:12px 0;color:#999}.topbar-actions .primary{font-size:11px}.scene-wrap{margin:50px auto 24px}.section-line{display:flex;justify-content:space-between;border-top:1px solid #383838;padding:14px 0 24px;font:10px monospace;letter-spacing:.13em;color:#858585;text-transform:uppercase}.building{padding:14px;background:#030303;border:1px solid #252525;box-shadow:0 30px 100px #000}.building-scene{max-width:1220px;margin:auto}#apartmentGrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}.apartment-unit{grid-column:span 2;position:relative;min-width:0;padding:0;border:0;background:transparent;text-align:left;animation:arrive .7s both;animation-delay:var(--delay)}.apartment-unit:nth-child(5n+1){grid-column:span 3}.apartment-unit:nth-child(5n+2){grid-column:span 3}.apartment-unit:hover{background:transparent}.room-stage{position:relative;overflow:hidden;aspect-ratio:1.65;background:#ddd;box-shadow:0 0 18px #ffffff12;transition:box-shadow .5s,filter .5s,transform .5s;transform-origin:center}.apartment-unit:nth-child(5n+1) .room-stage{aspect-ratio:2.05}.apartment-unit:nth-child(5n+2) .room-stage{aspect-ratio:2.05}.architecture{width:100%;height:100%;display:block;transition:transform .7s}.apartment-unit:hover .architecture,.apartment-unit:focus-visible .architecture{transform:scale(1.035)}.apartment-unit:hover .room-stage,.apartment-unit:focus-visible .room-stage{box-shadow:0 0 38px #ffffff45;filter:brightness(1.1)}.unit-caption{display:flex;justify-content:space-between;gap:10px;padding:13px 3px 17px;font:10px monospace;letter-spacing:.06em;color:#888}.unit-name{color:#c3c3c3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.is-me .unit-name::before{content:'— ';color:#fff}.unit-meta{font-size:9px;color:#777}.enter-hint{position:absolute;right:16px;bottom:16px;font:9px monospace;letter-spacing:.13em;color:#111;opacity:0;transform:translateY(4px);transition:.3s}.apartment-unit:hover .enter-hint,.apartment-unit:focus-visible .enter-hint{opacity:1;transform:none}.memory-thumbs{position:absolute;left:21%;bottom:19%;display:flex;gap:12px;align-items:flex-end;max-width:42%;height:25%;pointer-events:none}.memory-thumb{width:clamp(22px,4vw,48px);height:100%;object-fit:contain;filter:grayscale(1) contrast(1.3) brightness(.65);mix-blend-mode:multiply}.lobby-footer{display:flex;justify-content:space-between;gap:20px;font:10px/1.8 monospace;color:#777;margin-top:22px}.empty-lobby{grid-column:1/-1;min-height:240px;display:grid;place-items:center;color:#888;font:12px monospace}.view-arrive{animation:arrive .7s both}@keyframes arrive{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+#roomView{height:100%;display:grid;grid-template-columns:260px minmax(0,1fr) 280px;background:#080808}.panel{padding:22px 18px;overflow:auto;background:#101010;border:0 solid var(--line)}#leftPanel{border-right-width:1px}#rightPanel{border-left-width:1px}.room-head{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:24px}.room-head h2{margin:6px 0}.room-head p{font-size:12px}.row{display:flex;gap:6px;flex-wrap:wrap}.tool-btn,.row button{font-size:11px;padding:9px 12px}.section{margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}#promptInput,#connectionInput{width:100%;min-height:94px;resize:vertical;font-size:12px;line-height:1.6}.status{padding:12px 0;color:#999;font:11px/1.6 monospace}#canvasWrap{position:relative;min-width:0;min-height:300px;overflow:hidden;background:#080808}#threeCanvas{width:100%;height:100%;display:block}.canvas-badge{position:absolute;left:18px;bottom:18px;max-width:70%;color:#aaa;font:10px/1.6 monospace;pointer-events:none}.next-room{position:absolute;top:18px;right:18px;background:#111b;font-size:11px}.selected-empty{font-size:12px;color:#888;padding:16px 0}#selectedPreview{width:100%;aspect-ratio:1;object-fit:contain;background:#ddd;filter:grayscale(1);margin-bottom:14px}#selectedPrompt{font-size:14px;line-height:1.5}#selectedTime{font:10px monospace;color:#888;margin:8px 0 20px}#connectionInput{margin-bottom:10px}.connection{border-bottom:1px solid var(--line);padding:14px 0}.connection strong{font-size:11px}.connection p{font-size:12px;margin:6px 0}.connection time{display:block;font:9px monospace;color:#777}.algorithm-note{font-size:11px;line-height:1.7;color:#888}
+@media(max-width:1100px){#roomView{grid-template-columns:220px minmax(0,1fr) 230px}.panel{padding:18px 12px}.topbar{display:block}.topbar-actions{justify-content:flex-start;margin-top:20px}}
+@media(max-width:760px){.lobby-shell{padding:28px 20px}.scene-wrap{margin-top:30px}#apartmentGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.apartment-unit,.apartment-unit:nth-child(5n+1),.apartment-unit:nth-child(5n+2){grid-column:span 1}.room-stage,.apartment-unit:nth-child(5n+1) .room-stage,.apartment-unit:nth-child(5n+2) .room-stage{aspect-ratio:1.15}.unit-meta{display:none}.building{padding:10px}.lobby-footer{display:block}#roomView{height:auto;min-height:100%;grid-template-columns:1fr}#canvasWrap{grid-row:1;height:60vh;min-height:360px}.panel{overflow:visible;padding:24px;border-top:1px solid var(--line)}#leftPanel,#rightPanel{border-left:0;border-right:0}.login-card{padding-left:22px}.login-row{flex-wrap:wrap}.section-line{letter-spacing:.04em}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Real spatial lobby — projected labels above a WebGL architectural model. */
+.building{position:relative;padding:0;background:#080808;border:0;box-shadow:none;height:620px;min-height:480px}
+#lobbyCanvas{display:block;width:100%;height:100%;touch-action:pan-y}
+#apartmentGrid{position:absolute;inset:0;display:block;pointer-events:none;z-index:2}
+.spatial-room-label{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;white-space:nowrap;font:10px monospace;letter-spacing:.06em;border:0;padding:8px 10px;background:#080808c9;color:#aaa;max-width:190px;overflow:hidden;text-overflow:ellipsis}
+.spatial-room-label:hover,.spatial-room-label.is-hovered{background:#080808;color:#fff}
+@media(max-width:760px){.building{min-height:400px}.spatial-room-label{font-size:9px;padding:8px 4px;max-width:105px}#apartmentGrid{display:block}.scene-wrap{margin-top:18px}}
+
+/* Archival collage room: CSS grain stays separate from selectable 3D objects. */
+#canvasWrap::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.10;z-index:1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23000' filter='url(%23n)' opacity='.55' d='M0 0h180v180H0z'/%3E%3C/svg%3E");mix-blend-mode:multiply}
+.canvas-badge{z-index:2;color:#333;background:#eeeeeed9;padding:7px 9px;border-left:2px solid #777}.next-room{z-index:3}
+.tool-btn.active{border-color:#b4a8cf}.tool-btn:focus-visible{outline-color:#b4a8cf}
+
+/* Animated reference collage on the entrance screen. */
+#loginView{position:relative;isolation:isolate;overflow:hidden;background:#111}
+.entrance-art{position:absolute;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+.entrance-art-layer{position:absolute;inset:-4%;background-image:url('./entrance-collage.png');background-repeat:no-repeat;background-size:100% 172%;background-position:center top;filter:grayscale(.8) contrast(1.08);opacity:.58;animation:collage-drift 32s ease-in-out infinite alternate;will-change:transform}
+#loginView::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#080808d9,#080808a3 65%,#080808b8),linear-gradient(0deg,#08080899,transparent 65%)}
+.login-card{background:#0b0b0b70;padding-right:24px;backdrop-filter:blur(2px)}
+@keyframes collage-drift{from{transform:translate(-1%,-.5%) scale(1.03)}to{transform:translate(1%,1%) scale(1.10)}}
+@media(max-width:760px){.entrance-art-layer{background-size:auto 172%;background-position:40% top}.login-card{padding-right:12px}}
+@media(prefers-reduced-motion:reduce){.entrance-art-layer{animation:none;will-change:auto}}
+
+/* Brighter reference collage with a continuous left-to-right motion. */
+.entrance-art-layer{background-repeat:repeat-x;background-size:1100px 172%;background-position:0 top;opacity:.88;filter:grayscale(.55) contrast(1.02);animation:collage-pan-right 55s linear infinite;transform:none;will-change:background-position}
+#loginView::after{background:linear-gradient(90deg,#08080870,#08080838 65%,#08080848)}
+.login-card{background:#080808a6;border-color:#aaaaaa;padding-top:28px;padding-bottom:28px;backdrop-filter:blur(3px)}
+@keyframes collage-pan-right{from{background-position:0 top}to{background-position:1100px top}}
+@media(max-width:760px){.entrance-art-layer{background-size:1100px 172%;background-position:0 top}}
+@media(prefers-reduced-motion:reduce){.entrance-art-layer{animation:none;will-change:auto}}
+
+#lobbyView{height:100%;min-height:0;overflow-y:auto;overflow-x:hidden}
+
+.size-field{display:flex;align-items:center;justify-content:space-between;gap:12px;font:11px monospace;margin-bottom:8px}.size-field input{width:92px;padding:8px}
+  </style>
+</head>
+
+<body>
+<div id="app">
+
+  <!-- LOGIN -->
+  <section id="loginView">
+    <div class="entrance-art" aria-hidden="true"><div class="entrance-art-layer"></div></div>
+    <div class="login-card">
+      <div class="eyebrow">Shared Minds · Multi-user experiment</div>
+      <h1>Shared<br>Memory House</h1>
+      <p>
+        Everyone gets a room. Build yours from AI-generated memory objects,
+        visit your neighbors, and connect through memories instead of likes.
+      </p>
+
+      <div class="login-row">
+        <input id="nameInput" aria-label="Your volunteered name" type="text" maxlength="40" placeholder="What should people call you?" />
+        <button id="enterBtn" class="primary">Enter</button>
+      </div>
+
+      <p id="loginError" role="status"></p>
+      <p style="font-size:11px;margin:12px 0 0;color:#8a857e">
+        This prototype uses a volunteered name instead of full authentication.
+      </p>
+    </div>
+  </section>
+
+  <!-- LOBBY / STREET -->
+  <section id="lobbyView" class="hidden">
+    <div class="lobby-shell">
+
+      <div class="topbar">
+        <div class="title-wrap">
+          <div class="eyebrow">An inhabited archive</div>
+          <h2>Shared Memory House</h2>
+          <p>
+            The building is a map of different people's memory rooms.
+            Click any apartment to enter. An empty room stays empty. Select a space to enter.
+          </p>
+        </div>
+
+        <div class="topbar-actions">
+          <button id="entranceBtn" class="secondary">← Entrance</button>
+          <button id="addRoomBtn" class="secondary">+ Add Room</button>
+          <button id="myRoomBtn" class="primary">My Room</button>
+          <button id="seedBtn" class="secondary">Add Demo Neighbors</button>
+          <button id="logoutBtn" class="secondary">Change Name</button>
+        </div>
+      </div>
+
+      <div class="scene-wrap">
+        <div class="section-line"><span>Section 01 / The inhabited archive</span><span id="lobbyStatus" role="status">Connecting…</span></div>
+        <div class="building-scene"><div class="building"><div id="apartmentGrid"><div class="empty-lobby">Loading rooms…</div></div></div></div>
+        <div class="lobby-footer"><span>An empty room is a beginning. Select a space to enter.</span><span>— marks your room · Shared Minds / ITP</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ROOM -->
+  <section id="roomView" class="hidden">
+    <aside id="leftPanel" class="panel">
+      <button id="backBtn" class="secondary" style="width:100%;margin-bottom:14px">
+        ← Return to the House
+      </button>
+
+      <button id="roomEntranceBtn" class="secondary" style="width:100%;margin-bottom:14px">← Return to Entrance</button>
+
+      <div class="room-head">
+        <div class="eyebrow">Memory room</div>
+        <h2 id="roomTitle">—</h2>
+        <p id="roomSubtitle">—</p>
+      </div>
+
+      <button id="deleteRoomBtn" class="danger hidden" style="width:100%">Delete This Room</button>
+      <div id="deleteRoomStatus" class="status" role="status"></div>
+
+      <div id="ownerControls">
+        <div class="section" style="margin-top:0;padding-top:0;border:0;margin-bottom:22px">
+          <button id="roomSizeBtn" class="secondary" style="width:100%">Room Dimensions · X / Y / Z</button>
+          <div id="roomSizeControls" class="hidden" style="margin-top:14px">
+            <label class="size-field">Width X <input id="roomSizeX" type="number" min="2" max="20" step="0.1" value="8" /></label>
+            <label class="size-field">Height Y <input id="roomSizeY" type="number" min="2" max="20" step="0.1" value="5" /></label>
+            <label class="size-field">Depth Z <input id="roomSizeZ" type="number" min="2" max="20" step="0.1" value="7" /></label>
+            <button id="saveRoomSizeBtn" class="primary" style="width:100%;margin-top:8px">Apply Dimensions</button>
+            <p style="font-size:11px;margin:10px 0 0">Objects keep their size and position.</p>
+          </div>
+        </div>
+        <div class="section-title">Add a memory object</div>
+        <textarea id="promptInput" aria-label="Describe a memory object" placeholder="A red suitcase from my first trip to New York…"></textarea>
+        <button id="addObjectBtn" class="primary" style="width:100%;margin-top:8px">
+          Generate Object
+        </button>
+        <div id="status" class="status" role="status">Ready.</div>
+
+        <div class="section">
+          <div class="section-title">Edit selected object</div>
+
+          <div class="row">
+            <button class="tool-btn active" data-mode="translate">Move</button>
+            <button class="tool-btn" data-mode="rotate">Rotate</button>
+            <button class="tool-btn" data-mode="scale">Scale ↗</button>
+          </div>
+
+          <div class="row" style="margin-top:8px">
+            <button id="deleteBtn" class="danger">Delete</button>
+            <button id="clearBtn" class="secondary">Clear Room</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Sequence</div>
+        <button id="playBtn" class="secondary" style="width:100%">
+          ▶ Play Memory Sequence
+        </button>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Camera</div>
+        <button id="resetViewBtn" class="secondary" style="width:100%">
+          Reset View
+        </button>
+      </div>
+    </aside>
+
+    <main id="canvasWrap">
+      <canvas id="threeCanvas"></canvas>
+
+      <div id="modeBadge" class="canvas-badge">
+        Viewing room
+      </div>
+
+      <button id="nextRoomBtn" class="secondary next-room">
+        Next Room →
+      </button>
+    </main>
+
+    <aside id="rightPanel" class="panel">
+      <div class="eyebrow">Social connection</div>
+      <h3>This reminds me of…</h3>
+
+      <p style="font-size:13px">
+        Instead of a like button, connect one of their objects to a memory of your own.
+      </p>
+
+      <div id="selectedEmpty" class="selected-empty">
+        Click an object in the room to see its story.
+      </div>
+
+      <div id="selectedInfo" class="hidden">
+        <img id="selectedPreview" alt="Selected memory object" />
+        <div id="selectedPrompt"></div>
+        <div id="selectedTime"></div>
+
+        <textarea id="connectionInput" aria-label="This reminds me of" placeholder="This reminds me of…"></textarea>
+
+        <button id="connectionBtn" class="primary" style="width:100%">
+          Leave a Connection
+        </button>
+
+        <div class="section">
+          <div class="section-title">Connections</div>
+          <div id="connectionList"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Recommendation idea</div>
+        <div class="algorithm-note">
+          “Next Room” is intentionally not a pure filter bubble:
+          most of the time it chooses a room with overlapping memory words,
+          but sometimes it sends you somewhere different.
+        </div>
+      </div>
+    </aside>
+  </section>
+
+</div>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>
