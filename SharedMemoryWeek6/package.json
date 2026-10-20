@@ -1,0 +1,12 @@
+{
+  "name": "shared-memory-space",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/math.test.mjs && node tests/umap.test.mjs && node tests/room-rendering.test.mjs",
+    "test:dom": "node tests/dom.test.mjs && node tests/lobby-modes.test.mjs && node tests/transform-mode.test.mjs"
+  },
+  "devDependencies": {
+    "linkedom": "0.18.12"
+  }
+}
