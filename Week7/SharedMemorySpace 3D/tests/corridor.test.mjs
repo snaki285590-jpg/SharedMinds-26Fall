@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {corridorLayout} from '../corridor-layout.js';
+const records=[{key:'home',vector:[1,0]},{key:'night',vector:[0,1]}];
+const keys=['home','night','empty'];
+const a=corridorLayout([1,0],records,{home:[.1,.4],night:[.9,.6]},keys,'me');
+const b=corridorLayout([0,1],records,{home:[.1,.4],night:[.9,.6]},keys,'me');
+assert.equal(a[0].key,'home');assert.equal(b[0].key,'night');
+assert.equal(a.length,3);assert.equal(new Set(a.map(r=>r.key)).size,3);
+assert.ok(a.every(r=>r.position.every(Number.isFinite)));
+assert.equal(corridorLayout(null,[],{},keys,'me').length,3);
+assert.deepEqual(corridorLayout(null,[],{},[],'me'),[]);
+assert.ok(corridorLayout([1,0],records,{home:[NaN,Infinity]},keys,'me').every(r=>r.position.every(Number.isFinite)));
+console.log('PASS corridor: query reranking, empty residents, finite cluster offsets, empty collection');

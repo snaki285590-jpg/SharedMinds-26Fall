@@ -1,0 +1,64 @@
+/* Soft monochrome studio controls. Scoped to the room; the artwork stays intact. */
+#roomView{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;grid-template-columns:272px minmax(0,1fr) 272px}
+#roomView button,#roomView input,#roomView textarea{font-family:inherit}
+#roomView .panel{background:#151515;padding:22px 18px;scrollbar-width:thin;scrollbar-color:#454545 transparent}
+#roomView button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;font-size:12px;font-weight:500;letter-spacing:-.01em;min-height:38px;transition:background .18s,border-color .18s,color .18s}
+#roomView button:active{transform:translateY(1px)}
+.ui-icon{display:block;width:18px;height:18px;flex:none}
+#roomView button:focus-visible,#roomView textarea:focus-visible,#roomView input:focus-visible{outline:2px solid #ddd;outline-offset:3px}
+.room-navigation{display:flex;gap:8px;margin-bottom:28px}
+#roomView .nav-pill{padding:7px 11px;min-height:34px;background:#222;border:1px solid #333;border-radius:999px;color:#ccc;font-size:11px}
+#roomView .nav-pill:hover{background:#303030;color:white}.nav-pill .ui-icon{width:15px;height:15px}
+#roomView .room-head{border:0;margin:0 0 26px;padding:0}
+.room-avatar{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(145deg,#353535,#232323);box-shadow:inset 0 0 0 1px #ffffff0d;margin-bottom:18px;color:#dedede}
+.room-avatar .ui-icon{width:23px;height:23px}
+#roomView .eyebrow,#roomView .section-title{display:block;font:500 10px/1.5 -apple-system,BlinkMacSystemFont,sans-serif;text-transform:none;letter-spacing:.03em;color:#929292;margin-bottom:10px}
+#roomView .room-head h2{font-size:32px;font-weight:550;letter-spacing:-.055em;line-height:1.2;margin:0 0 9px;overflow-wrap:anywhere}
+#roomSubtitle{color:#a0a0a0;font-size:12px!important;line-height:1.6;margin:0;max-width:215px}
+#roomView .section{margin-top:23px;padding-top:0;border:0}
+.inspector-card{background:#202020;border:1px solid #303030;border-radius:14px;overflow:hidden}
+#roomView .disclosure-button{width:100%;padding:13px 12px;background:transparent;border:0;border-radius:0;text-align:left;justify-content:flex-start}
+.disclosure-button>span{flex:1;font-size:12px}.disclosure-button small{display:block;margin-top:3px;font-size:9px;letter-spacing:.12em;color:#888}.disclosure-button>.ui-icon:last-child{width:13px;height:13px;color:#888;transition:transform .2s}.disclosure-button[aria-expanded="true"]>.ui-icon:last-child{transform:rotate(90deg)}
+.dimension-fields{padding:4px 12px 12px}#roomView .size-field{font-family:inherit;font-size:11px;line-height:1.5;color:#aaa;margin-bottom:8px}#roomView .size-field input{background:#161616;border:1px solid #383838;border-radius:8px;padding:7px;width:78px;font-size:12px}#saveRoomSizeBtn{width:100%}.inspector-caption{font-size:10px;color:#888;margin:10px 0 0;line-height:1.5}
+.memory-composer{padding:9px;background:#222;border:1px solid #373737;border-radius:17px;transition:border-color .2s}.memory-composer:focus-within{border-color:#888}
+#roomView #promptInput{display:block;padding:7px 5px;width:100%;min-height:102px;border:0;border-radius:8px;background:transparent;font-size:13px;line-height:1.65;resize:vertical;outline:none}
+#roomView #promptInput::placeholder{color:#818181}
+#roomView #addObjectBtn{width:100%;min-height:37px;margin-top:7px;padding:9px 10px;border:0;border-radius:10px;background:#ededed;color:#191919;box-shadow:0 1px 3px #0002}
+#roomView #addObjectBtn:hover{background:white}#addObjectBtn .ui-icon{width:16px;height:16px}
+#roomView .status{font:10px/1.6 -apple-system,BlinkMacSystemFont,sans-serif;color:#999;padding:8px 2px;overflow-wrap:anywhere}#deleteRoomStatus:empty{display:none}
+#roomView .segmented-tools{display:flex;flex-wrap:nowrap;gap:3px;padding:4px;background:#222;border:1px solid #303030;border-radius:12px}
+#roomView .segmented-tools .tool-btn{flex:1;min-width:0;min-height:50px;flex-direction:column;gap:5px;padding:7px 3px;border:0;border-radius:8px;background:transparent;color:#999;font-size:10px}
+#roomView .segmented-tools .tool-btn.active{background:#414141;color:white;box-shadow:0 1px 4px #0004}
+#roomView .segmented-tools .tool-btn:hover{color:white;background:#333}#roomView .segmented-tools .tool-btn.active:hover{background:#494949}
+#roomView .object-actions{gap:5px;justify-content:space-between;margin-top:8px}
+#roomView .object-actions button{border:0;background:transparent;font-size:10px;padding:6px;min-height:31px;color:#aaa;gap:5px}.object-actions .ui-icon{width:13px;height:13px}
+#roomView .object-actions button:hover{background:#292929;color:white}
+#roomView .utility-button{width:100%;padding:11px 12px;justify-content:flex-start;gap:10px;border:1px solid #303030;background:#202020;margin-bottom:7px;border-radius:12px}
+.utility-button>span{flex:1;text-align:left}.utility-button>.ui-icon:last-child{width:12px;height:12px;color:#777}#roomView .utility-button:hover{background:#2a2a2a;border-color:#444}
+#roomView #deleteRoomBtn{width:100%;border:1px solid #454545;color:#bbb;font-size:11px;margin-bottom:8px}#roomView #deleteRoomBtn:hover{background:#322222;color:#f0b5b5}
+#roomView .next-room{border-radius:999px;background:#222d;backdrop-filter:blur(16px);border:1px solid #ffffff22;padding:9px 14px;font-size:11px}.next-room .ui-icon{width:15px;height:15px}
+#roomView #rightPanel h3{font-size:20px;font-weight:550;letter-spacing:-.04em;margin-bottom:12px}#roomView #rightPanel>p{font-size:12px!important;line-height:1.65;color:#999}
+#roomView #selectedEmpty{padding:22px 15px;border:1px dashed #3c3c3c;border-radius:14px;font-size:12px;line-height:1.6;color:#888;margin-top:24px}
+#roomView #selectedPreview{border-radius:14px;background:#c7c7c3}#roomView #selectedPrompt{font-size:14px;line-height:1.6;color:#ddd}#roomView #selectedTime{font-family:inherit;font-size:10px;line-height:1.5;color:#888}
+#roomView #connectionInput{background:#222;border:1px solid #383838;border-radius:14px;padding:12px;font-size:12px}#roomView #connectionBtn{width:100%;border-radius:999px;min-height:38px;font-size:12px}
+#roomView .connection{border-bottom:1px solid #ffffff0d;padding:13px 0}#roomView .connection p{color:#bbb}
+#roomView .room-about{margin-top:28px;border-top:1px solid #ffffff10;padding-top:16px}.room-about summary{font-size:11px;color:#929292;cursor:pointer;line-height:1.6}.room-about .algorithm-note{margin-top:12px;font-size:11px;line-height:1.7;color:#888}
+#roomView .canvas-badge{border:1px solid #ffffff30;border-radius:999px;backdrop-filter:blur(14px);background:#f3f3f3d9;font:10px/1.5 -apple-system,BlinkMacSystemFont,sans-serif;padding:7px 12px}
+@media(max-width:1100px) and (min-width:761px){#roomView{grid-template-columns:236px minmax(0,1fr) 230px}#roomView .panel{padding:18px 14px}}
+@media(max-width:760px){#roomView{grid-template-columns:1fr}#roomView .panel{padding:24px}.room-navigation{margin-bottom:22px}#roomView .room-head{margin-bottom:22px}#roomView .memory-composer{max-width:none}}
+@media(prefers-reduced-motion:reduce){#roomView button,.disclosure-button>.ui-icon:last-child{transition:none!important}}
+.room-lens-control{position:absolute;z-index:6;bottom:24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:11px 15px;background:#17191de0;border:1px solid #ffffff20;border-radius:24px;color:#c9cbd0;backdrop-filter:blur(12px);max-width:90%;font:10px monospace;touch-action:auto}
+.room-lens-control label{font:8px monospace;letter-spacing:.12em;color:#999}
+.room-lens-control span{font-size:16px}
+.room-lens-control output{min-width:52px;font-size:9px;color:#999}
+.room-lens-control input[type=range]{appearance:none;-webkit-appearance:none;width:170px;max-width:35vw;height:5px;padding:0;border:0;border-radius:5px;background:linear-gradient(to right,#438ceb var(--lens-fill,19%),#494d55 var(--lens-fill,19%));cursor:ew-resize}
+.room-lens-control input::-webkit-slider-thumb{appearance:none;width:17px;height:17px;border-radius:50%;background:#ededed;border:0;box-shadow:0 1px 5px #0008}
+.room-lens-control input::-moz-range-thumb{width:17px;height:17px;border-radius:50%;background:#ededed;border:0}
+@media(max-width:760px){.room-lens-control{bottom:62px;padding:10px 12px;gap:8px}.room-lens-control input[type=range]{width:140px}.room-lens-control label{display:none}}
+.photo-memory-controls{margin-top:16px;border-top:1px solid #ffffff15;padding-top:14px}
+.photo-memory-controls>button{width:100%;font-size:11px}
+#photoMemoryImage{display:block;max-width:100%;max-height:160px;object-fit:contain;margin:12px auto;background:#191919}
+#photoMemoryPreview .row button{font-size:10px;padding:8px}
+.photo-memory-controls .inspector-caption{font-size:10px;line-height:1.6;margin-top:10px;color:#888}
+#generatedPhotoImage{display:block;max-width:100%;height:140px;object-fit:contain;margin:10px auto;background:#222}
+#revealPhotoMemory{font-size:10px;margin-top:8px;width:100%}
